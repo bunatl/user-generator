@@ -1,0 +1,42 @@
+#params > div{
+    margin-bottom: 2em;
+
+    >div, 
+    >.MuiFormControl-root{
+        width: 100%;
+    }
+}
+
+#gender > .MuiFormControl-root > div{
+    @include flex(row, wrap, space-between);
+}
+
+#password > .MuiFormControl-root > div{
+    width: 100%;
+    &:nth-child(2){
+        @include flex(row, wrap, space-between);
+    }
+    &:nth-child(3){
+        width: 100%;
+        border-bottom: 1px solid black;
+        >input{
+            text-align: center;
+        }
+    }
+}
+
+#refresh{
+    border: 1px solid black;
+    background: $primarycolor;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+    margin-top: 2em;
+    padding: 1em;
+    border-radius: .75em;
+    &:hover{
+        background: teal;
+        cursor: pointer;
+    }
+}

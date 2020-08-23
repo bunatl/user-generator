@@ -1,0 +1,23 @@
+#Card{
+    background: lightgray;
+    border: 1px solid white;
+    border-radius: 1.25em;
+    padding: 1.5em;
+    font-size: 1.35em;
+    max-width: 50%;
+    div{
+        padding-bottom: .5em;
+
+        &:first-child{
+            text-align: center;
+        }
+
+        img{
+            border: 1px solid black;
+        }
+    }
+    svg{
+        vertical-align: middle;
+        margin-right: .4em;
+    }
+}

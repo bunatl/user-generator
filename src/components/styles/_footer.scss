@@ -1,0 +1,17 @@
+footer{
+    text-align: center;
+    font-size: 1.1em;
+    
+    a{
+        font-weight: bold;
+        color: black;
+        // for hover transform
+        display: inline-block;
+
+        text-decoration: none;
+
+        &:hover{
+            transform: scale(1.05);
+        }
+    }
+}

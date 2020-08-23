@@ -1,0 +1,42 @@
+@import 'variables.scss';
+@import 'profile.scss';
+@import 'parameters.scss';
+@import 'footer.scss';
+
+
+body{
+    background: $primarycolor;
+    margin: 0;
+}
+
+#app{
+    width: 80%;
+    max-width: 1440px;
+    min-width: 400px;
+    min-height: 100vh;
+
+    // center
+    margin: 0 auto;
+    padding: 0 .75em;
+
+    background: darkgray;
+    box-shadow: 0 0 12px 4px lightgray;
+
+    @include flex(column, nowrap, space-between );
+
+    h1{
+        text-align: center;
+        margin: 0;
+        padding-top: .75em;
+        padding-bottom: .5em;
+    }
+}
+
+#content{
+    @include flex(row, wrap, space-around );
+}
+
+footer{
+    border-top: 1px solid black;
+    min-height: 5em;
+}

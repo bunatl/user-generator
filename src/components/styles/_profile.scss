@@ -1,8 +1,12 @@
-#Card{
+%card-style{
     background: lightgray;
     border: 1px solid white;
     border-radius: 1.25em;
     padding: 1.5em;
+}
+
+#Card{
+    @extend %card-style;
     font-size:  #{"min(2.25vw, 1.35em)"};
     @media screen and (max-width: 800px) {
         max-width: 80%;
@@ -23,5 +27,15 @@
     svg{
         vertical-align: middle;
         margin-right: .4em;
+    }
+}
+
+#loader{
+    @extend %card-style;
+    min-width: 50%;
+    max-width: 50%;
+    
+    > div{ 
+        margin: 10em auto;
     }
 }

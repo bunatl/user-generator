@@ -6,6 +6,7 @@ import '../styles/styles.scss';
 // import components
 import Profile from '../Profile';
 import Parameters from '../Parameters';
+import Placeholder from '../Placeholder'
 import Footer from '../Footer'
 
 interface pics {
@@ -52,8 +53,6 @@ const App: React.FC = () => {
 
       try {
         const url = `https://randomuser.me/api/${params !== '' ? params : ''}`;
-        console.log(url);
-
         const res = await fetch(url, {
           method: "GET",
           headers: {
@@ -93,7 +92,7 @@ const App: React.FC = () => {
     <div id="app">
       <h1>Random user generator <span role="img" aria-label="reload">🔃</span></h1>
       <div id="content">
-        {loading ? "loading text" : <Profile obj={profile} />}
+        {loading ? <Placeholder /> : <Profile obj={profile} />}
         <Parameters
           updateParameters={x => setParams(x)}
           refreshProfile={() => setReload(!reload)}

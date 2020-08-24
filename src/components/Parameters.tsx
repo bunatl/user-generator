@@ -15,6 +15,7 @@ import {
 
 interface ParametersProps {
     updateParameters: (params: string) => void;
+    refreshProfile: () => void;
 }
 
 const initPassword: Password = {
@@ -58,10 +59,9 @@ const passwordReducer = (state: Password, action: Actions) => {
     }
 }
 
-const Parameters: FC<ParametersProps> = ({ updateParameters }) => {
+const Parameters: FC<ParametersProps> = ({ updateParameters, refreshProfile }) => {
     const [ gender, setGender ] = useState<string>("both");
     const [ nationality, setNationality ] = useState<unknown>("random");
-    const [ params, setParams ] = useState<string>("");
     // passwordReducer - reducer function, [] - initial state
     const [ password, dispatch ] = useReducer(passwordReducer, initPassword);
 
@@ -98,7 +98,6 @@ const Parameters: FC<ParametersProps> = ({ updateParameters }) => {
         else
             paramURL += `${joint ? '&' : '?'}password=1-${password.numOfChars}`;
 
-        setParams(paramURL);
         updateParameters(paramURL);
     }, [ gender, nationality, password, updateParameters ])
 
@@ -108,10 +107,14 @@ const Parameters: FC<ParametersProps> = ({ updateParameters }) => {
                 {/* ?gender=female */}
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Gender</FormLabel>
-                    <RadioGroup aria-label="gender" name="gender1" value={gender} onChange={handleChange}>
-                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="both" control={<Radio />} label="Both" />
+                    <RadioGroup
+                        aria-label="gender"
+                        name="gender1"
+                        value={gender}
+                        onChange={handleChange}>
+                        <FormControlLabel value="female" control={<Radio color="primary" />} label="Female" />
+                        <FormControlLabel value="male" control={<Radio color="primary" />} label="Male" />
+                        <FormControlLabel value="both" control={<Radio color="primary" />} label="Both" />
                     </RadioGroup>
                 </FormControl>
             </div>
@@ -124,16 +127,20 @@ const Parameters: FC<ParametersProps> = ({ updateParameters }) => {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    name="upper" />}
+                                    name="upper"
+                                    color="primary"
+                                    onChange={() => {
+                                        dispatch({ type: "upper" })
+                                    }}
+                                />
+                            }
                             label="Upper case"
-                            onChange={() => {
-                                dispatch({ type: "upper" })
-                            }}
                         />
                         <FormControlLabel
                             control={
                                 <Checkbox
                                     name="lower"
+                                    color="primary"
                                     onChange={() => {
                                         dispatch({ type: "lower" })
                                     }}
@@ -155,6 +162,7 @@ const Parameters: FC<ParametersProps> = ({ updateParameters }) => {
                 {/* ?nat=gb (AU, BR, CA, CH, DE, DK, ES, FI, FR, GB, IE, IR, NO, NL, NZ, TR, US) */}
                 <FormControl variant="outlined">
                     <InputLabel id="demo-simple-select-outlined-label">Nationality</InputLabel>
+                    {/* FindDOMnode error: https://stackoverflow.com/questions/61115871/finddomnode-error-on-react-material-ui-select-menu */}
                     <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
@@ -186,8 +194,8 @@ const Parameters: FC<ParametersProps> = ({ updateParameters }) => {
             </div>
             <div
                 id="refresh"
-            // rerun updateParameters() -> rerun fetch in App.tsx
-            // onClick={() => updateParameters(params)}
+                // rerun useEffect in App.tsx -> rerun fetch in App.tsx
+                onClick={() => refreshProfile()}
             >Generate new random user</div>
         </div >
     );

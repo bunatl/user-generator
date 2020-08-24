@@ -1,24 +1,5 @@
 $primarycolor: darkslategray;
 
-@mixin buttonStyle(){
-    text-align: center;
-    background: chocolate;
-}
-// include
-
-%shared-style{
-    color: black;
-}
-
-.success{
-    @extend %shared-style;
-}
-
-.error{
-    @extend %shared-style;
-    font-weight: bold;
-}
-
 @mixin flex($direction, $wrap, $content){
     display: flex;
     flex-direction: $direction;

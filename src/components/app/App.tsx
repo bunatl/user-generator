@@ -44,6 +44,7 @@ const App: React.FC = () => {
   const [ profile, setProfile ] = useState<Person>(initPerson);
   const [ loading, setLoading ] = useState<boolean>(true);
   const [ params, setParams ] = useState<string>('');
+  const [ reload, setReload ] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +52,13 @@ const App: React.FC = () => {
 
       try {
         const url = `https://randomuser.me/api/${params !== '' ? params : ''}`;
+        console.log(url);
+
         const res = await fetch(url, {
-          method: "GET"
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          },
         })
         const jsonRes = await res.json();
         const result = jsonRes.results[ 0 ];
@@ -81,14 +87,17 @@ const App: React.FC = () => {
     }
     // init async function
     fetchData();
-  }, [ params ]);
+  }, [ params, reload ]);
 
   return (
     <div id="app">
       <h1>Random user generator <span role="img" aria-label="reload">🔃</span></h1>
       <div id="content">
         {loading ? "loading text" : <Profile obj={profile} />}
-        <Parameters updateParameters={x => setParams(x)} />
+        <Parameters
+          updateParameters={x => setParams(x)}
+          refreshProfile={() => setReload(!reload)}
+        />
       </div>
       <Footer />
     </div>

@@ -3,7 +3,11 @@
     border: 1px solid white;
     border-radius: 1.25em;
     padding: 1.5em;
-    font-size: 1.35em;
+    font-size:  #{"min(2.25vw, 1.35em)"};
+    @media screen and (max-width: 800px) {
+        max-width: 80%;
+        margin-bottom: 3em;
+    }
     max-width: 50%;
     div{
         padding-bottom: .5em;

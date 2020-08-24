@@ -1,2 +1,0 @@
-Create a new react boilerplate app with typescript
-npx create-react-app app-name --template typescript

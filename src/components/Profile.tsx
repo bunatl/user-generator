@@ -1,5 +1,5 @@
 import React from 'react';
-import { Person } from './app/App'
+import { Person } from '../types/PersonType'
 
 // icons
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
@@ -9,11 +9,11 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 
-interface PersonProps {
+interface IPersonProps {
     obj: Person
 }
 
-const Profile: React.FC<PersonProps> = ({ obj }) => {
+const Profile: React.FC<IPersonProps> = ({ obj }) => {
     return (
         <div id="Card">
             {/* photo */}

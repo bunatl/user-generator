@@ -1,3 +1,10 @@
+#params{
+    width: 90%;
+    @media screen and (min-width: $mobile-width) {
+        width: 40%;
+    }
+}
+
 #params > div{
     margin-bottom: 2em;
 
@@ -35,7 +42,7 @@
     background: $primarycolor;
     color: white;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: unquote("min(1.5em, 5.5vw)");
     text-align: center;
     margin-top: 2em;
     padding: 1em;

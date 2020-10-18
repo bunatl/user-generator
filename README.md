@@ -1,18 +1,10 @@
 # Random user generator
-Simple webapp that generate random user info
 
 ## Description
-Random user generator retrieves user info from [random user API](https://randomuser.me/documentation) and displays it in its own UI. App user can specify parameters of that will be used during generation of the user info.
-
-### Features
-- Gender
-- Password lenght and set of characters
-- Nationality
-
-Date of birth is random and address & phone number corresponding with user nationality 
+Simple webapp that generate random user info that fetches from [random user API](https://randomuser.me/documentation) and displays it on its own UX. The user can specify parameters which will be used while generationing the user info.
 
 ## Live demo link
-Hosted on [www.user.techis.fun](https://user.techis.fun) with [Vercel](https://vercel.com/)
+Hosted on [www.user-generator.techis.fun](https://user-generator.techis.fun) with [Vercel](https://vercel.com/)
 
 ## Demo
 ![demo](demo.gif)

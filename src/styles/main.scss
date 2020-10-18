@@ -1,8 +1,5 @@
-@import 'variables.scss';
-@import 'profile.scss';
-@import 'parameters.scss';
-@import 'footer.scss';
-
+@import './abstract/variables';
+@import './components/general';
 
 body{
     background: $primarycolor;
@@ -12,7 +9,6 @@ body{
 #app{
     width: 80%;
     max-width: 1440px;
-    min-width: 400px;
     min-height: 100vh;
 
     // center
@@ -29,15 +25,18 @@ body{
         margin: 0;
         padding-top: .75em;
         padding-bottom: .5em;
-        font-size:  #{"min(5vw, 4em)"};
+        font-size:  #{"min(6.5vw, 4em)"};
     }
 }
 
 #content{
-    @include flex(row, wrap, space-around );
+    @include flex(row, wrap, space-around);
+    gap: 2em;
+    padding: 1.5em;
 }
 
 footer{
     border-top: 1px solid black;
     min-height: 5em;
+    font-size: unquote("min(1em, 4vw)");
 }

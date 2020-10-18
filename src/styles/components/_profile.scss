@@ -1,18 +1,14 @@
-%card-style{
-    background: lightgray;
-    border: 1px solid white;
-    border-radius: 1.25em;
-    padding: 1.5em;
-}
-
-#Card{
+#Card, 
+#loader{
     @extend %card-style;
     font-size:  #{"min(2.25vw, 1.35em)"};
-    @media screen and (max-width: 800px) {
-        max-width: 80%;
+
+    width: 90%;
+    
+    @media screen and (min-width: $mobile-width) {
+        width: 42%;
         margin-bottom: 3em;
     }
-    max-width: 50%;
     div{
         padding-bottom: .5em;
 
@@ -30,12 +26,8 @@
     }
 }
 
-#loader{
-    @extend %card-style;
-    min-width: 50%;
-    max-width: 50%;
-    
-    > div{ 
-        margin: 10em auto;
-    }
+// spinner
+#loader > div{ 
+    height: 100%;
+    margin: 7.05em auto;
 }

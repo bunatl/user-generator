@@ -1,30 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
 // import styles
-import '../styles/styles.scss';
+import '../styles/main.scss';
 
 // import components
-import Profile from '../Profile';
-import Parameters from '../Parameters';
-import Placeholder from '../Placeholder'
-import Footer from '../Footer'
+import Profile from './Profile';
+import Parameters from './Parameters';
+import Placeholder from './Placeholder'
+import Footer from './Footer'
 
-interface pics {
-  large: string,
-  medium: string,
-  thumbnail: string
-}
-
-export interface Person {
-  pic: pics;
-  name: string;
-  email: string;
-  dob: string;
-  address: string;
-  number: string;
-  userName: string;
-  pssw: string;
-};
+// import types
+import { Person } from '../types/PersonType'
 
 const initPerson: Person = {
   pic: {

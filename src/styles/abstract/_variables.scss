@@ -1,8 +1,16 @@
 $primarycolor: darkslategray;
+$mobile-width: 768px;
 
 @mixin flex($direction, $wrap, $content){
     display: flex;
     flex-direction: $direction;
     flex-wrap: $wrap;
     justify-content: $content;
+}
+
+%card-style{
+    background: lightgray;
+    border: 1px solid white;
+    border-radius: 1.25em;
+    padding: 1.5em;
 }

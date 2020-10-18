@@ -1,17 +1,9 @@
 import React, { useState, FC, useReducer, useEffect } from 'react';
+import * as MaterialUI from '@material-ui/core';
 
-import {
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    Checkbox,
-    InputLabel,
-    Select,
-    InputBase,
-    MenuItem
-} from '@material-ui/core';
+import { Password } from '../types/PasswordType';
+import { passwordReducer } from '../reducer/passwordReducer';
+import { constructParamURL } from '../utils/constructParamURL'
 
 interface ParametersProps {
     updateParameters: (params: string) => void;
@@ -24,48 +16,19 @@ const initPassword: Password = {
     numOfChars: '8'
 }
 
-interface Password {
-    lowercase: boolean;
-    uppercase: boolean;
-    numOfChars: string;
-}
-
-type Actions =
-    | { type: "lower" | "upper" }
-    | { type: "number"; num: string }
-
-const passwordReducer = (state: Password, action: Actions) => {
-    switch (action.type) {
-        case "upper":
-            return {
-                lowercase: state.lowercase,
-                uppercase: !state.uppercase,
-                numOfChars: state.numOfChars
-            };
-        case "lower":
-            return {
-                lowercase: !state.lowercase,
-                uppercase: state.uppercase,
-                numOfChars: state.numOfChars
-            };
-        case "number":
-            return {
-                lowercase: state.lowercase,
-                uppercase: state.uppercase,
-                numOfChars: action.num
-            };
-        default:
-            return initPassword;
-    }
-}
-
 const Parameters: FC<ParametersProps> = ({ updateParameters, refreshProfile }) => {
     const [ gender, setGender ] = useState<string>("both");
     const [ nationality, setNationality ] = useState<unknown>("random");
     // passwordReducer - reducer function, [] - initial state
     const [ password, dispatch ] = useReducer(passwordReducer, initPassword);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        // construct param's URL
+        const paramURL: string = constructParamURL(gender, nationality, password);
+        updateParameters(paramURL);
+    }, [ gender, nationality, password, updateParameters ])
+
+    const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setGender(e.target.value);
     }
 
@@ -76,57 +39,32 @@ const Parameters: FC<ParametersProps> = ({ updateParameters, refreshProfile }) =
         setNationality(e.target.value);
     }
 
-    useEffect(() => {
-        let paramURL: string = "";
-        let joint: boolean = false;
-        if (gender !== "both") {
-            paramURL += `${joint ? '&' : '?'}gender=${gender}`;
-            joint = true;
-        }
-
-        if (nationality !== "random") {
-            paramURL += `${joint ? '&' : '?'}nat=${nationality}`;
-            joint = true;
-        }
-
-        if (password.uppercase && password.lowercase)
-            paramURL = `${joint ? '&' : '?'}password=upper,lower,1-${password.numOfChars}`;
-        else if (password.uppercase && !password.lowercase)
-            paramURL += `${joint ? '&' : '?'}password=upper,1-${password.numOfChars}`;
-        else if (!password.uppercase && password.lowercase)
-            paramURL += `${joint ? '&' : '?'}password=lower,1-${password.numOfChars}`;
-        else
-            paramURL += `${joint ? '&' : '?'}password=1-${password.numOfChars}`;
-
-        updateParameters(paramURL);
-    }, [ gender, nationality, password, updateParameters ])
-
     return (
         <div id="params">
             <div id="gender">
                 {/* ?gender=female */}
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Gender</FormLabel>
-                    <RadioGroup
+                <MaterialUI.FormControl component="fieldset">
+                    <MaterialUI.FormLabel component="legend">Gender</MaterialUI.FormLabel>
+                    <MaterialUI.RadioGroup
                         aria-label="gender"
                         name="gender1"
                         value={gender}
-                        onChange={handleChange}>
-                        <FormControlLabel value="female" control={<Radio color="primary" />} label="Female" />
-                        <FormControlLabel value="male" control={<Radio color="primary" />} label="Male" />
-                        <FormControlLabel value="both" control={<Radio color="primary" />} label="Both" />
-                    </RadioGroup>
-                </FormControl>
+                        onChange={handleGenderChange}>
+                        <MaterialUI.FormControlLabel value="female" control={<MaterialUI.Radio color="primary" />} label="Female" />
+                        <MaterialUI.FormControlLabel value="male" control={<MaterialUI.Radio color="primary" />} label="Male" />
+                        <MaterialUI.FormControlLabel value="both" control={<MaterialUI.Radio color="primary" />} label="Both" />
+                    </MaterialUI.RadioGroup>
+                </MaterialUI.FormControl>
             </div>
 
             <div id="password">
                 {/* ?password=upper,lower,1-16 */}
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Password</FormLabel>
+                <MaterialUI.FormControl component="fieldset">
+                    <MaterialUI.FormLabel component="legend">Password</MaterialUI.FormLabel>
                     <div>
-                        <FormControlLabel
+                        <MaterialUI.FormControlLabel
                             control={
-                                <Checkbox
+                                <MaterialUI.Checkbox
                                     name="upper"
                                     color="primary"
                                     onChange={() => {
@@ -136,9 +74,9 @@ const Parameters: FC<ParametersProps> = ({ updateParameters, refreshProfile }) =
                             }
                             label="Upper case"
                         />
-                        <FormControlLabel
+                        <MaterialUI.FormControlLabel
                             control={
-                                <Checkbox
+                                <MaterialUI.Checkbox
                                     name="lower"
                                     color="primary"
                                     onChange={() => {
@@ -149,48 +87,48 @@ const Parameters: FC<ParametersProps> = ({ updateParameters, refreshProfile }) =
                             label="Lower Case"
                         />
                     </div>
-                    <InputBase
+                    <MaterialUI.InputBase
                         placeholder="Number of chars"
                         required
                         onChange={e => dispatch({
                             type: "number", num: e.target.value
                         })} />
-                </FormControl>
+                </MaterialUI.FormControl>
             </div>
 
             <div id="nationality">
                 {/* ?nat=gb (AU, BR, CA, CH, DE, DK, ES, FI, FR, GB, IE, IR, NO, NL, NZ, TR, US) */}
-                <FormControl variant="outlined">
-                    <InputLabel id="demo-simple-select-outlined-label">Nationality</InputLabel>
-                    {/* FindDOMnode error: https://stackoverflow.com/questions/61115871/finddomnode-error-on-react-material-ui-select-menu */}
-                    <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
+                <MaterialUI.FormControl variant="outlined">
+                    <MaterialUI.InputLabel id="demo-simple-MaterialUI.Select-outlined-label">Nationality</MaterialUI.InputLabel>
+                    {/* FindDOMnode error: https://stackoverflow.com/questions/61115871/finddomnode-error-on-react-material-ui-MaterialUI.Select-menu */}
+                    <MaterialUI.Select
+                        labelId="demo-simple-MaterialUI.Select-outlined-label"
+                        id="demo-simple-MaterialUI.Select-outlined"
                         value={nationality}
                         onChange={handleNationality}
                         label="nationality"
                     >
-                        <MenuItem value="random">
+                        <MaterialUI.MenuItem value="random">
                             <em>Random</em>
-                        </MenuItem>
-                        <MenuItem value={'au'}>Australian</MenuItem>
-                        <MenuItem value={'br'}>Brasilian</MenuItem>
-                        <MenuItem value={'ca'}>Canadian</MenuItem>
-                        <MenuItem value={'ch'}>Swiss</MenuItem>
-                        <MenuItem value={'de'}>German</MenuItem>
-                        <MenuItem value={'dk'}>Danish</MenuItem>
-                        <MenuItem value={'es'}>Estonian</MenuItem>
-                        <MenuItem value={'fi'}>Finnish</MenuItem>
-                        <MenuItem value={'fr'}>French</MenuItem>
-                        <MenuItem value={'ie'}>Icelandic</MenuItem>
-                        <MenuItem value={'ir'}>Irish</MenuItem>
-                        <MenuItem value={'no'}>Norwegian</MenuItem>
-                        <MenuItem value={'nl'}>Dutch</MenuItem>
-                        <MenuItem value={'nz'}>New Zealand</MenuItem>
-                        <MenuItem value={'tr'}>Turkish</MenuItem>
-                        <MenuItem value={'us'}>American</MenuItem>
-                    </Select>
-                </FormControl>
+                        </MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'au'}>Australian</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'br'}>Brasilian</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'ca'}>Canadian</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'ch'}>Swiss</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'de'}>German</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'dk'}>Danish</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'es'}>Estonian</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'fi'}>Finnish</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'fr'}>French</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'ie'}>Icelandic</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'ir'}>Irish</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'no'}>Norwegian</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'nl'}>Dutch</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'nz'}>New Zealand</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'tr'}>Turkish</MaterialUI.MenuItem>
+                        <MaterialUI.MenuItem value={'us'}>American</MaterialUI.MenuItem>
+                    </MaterialUI.Select>
+                </MaterialUI.FormControl>
             </div>
             <div
                 id="refresh"
